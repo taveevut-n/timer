@@ -1,53 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    content="width=device-width, initial-scale=1">
   <title>จับเวลาถอยหลัง</title>
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-        name="viewport">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Sans+Thai+Looped:wght@400;700&display=swap"
-        rel="stylesheet">
-  <style>
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Sarabun:wght@400;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+  <style type="text/css">
     body {
-      font-family: "DM Mono", "Noto Sans Thai Looped", monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      font-family: "DM Mono", "Sarabun", monospace;
+      /* height: 100vh; */
+      padding: 0;
       margin: 0;
       background-color: #f4f4f4;
     }
 
-    .timer {
-      font-size: 6rem;
-      font-weight: 700;
-      background-color: white;
-      padding: 30px;
+    .card {
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    .timer .badge {
-      font-size: 3rem;
-      color: rgb(7, 87, 224);
+    #countdown {
+      font-size: 8rem;
+      font-weight: 700;
+      background-color: white;
     }
 
-    .footer {
-      display: block;
-      font-size: 16px;
-      color: #ccc;
-      text-align: center;
+    #countdown .badge {
+      font-size: 2rem;
+      color: rgb(7, 87, 224);
     }
   </style>
 </head>
 
 <body>
+  <div class="container my-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-sm-12 col-md-10">
+        <div class="row align-items-center fs-4">
+          <div class="col-md-6 col-sm-12">
+            เวลาปัจจุบัน <span id="ccr-time"></span>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            เริ่ม <span id="start-time"></span>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            สิ้นสุด <span id="end-time"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center mt-4">
+      <div class="col-sm-12 col-md-10">
+        <div class="card py-5">
+          <div class="card-body text-center">
+            <div id="countdown">โหลด...</div>
+          </div>
+        </div>
 
-  <div class="timer"
-       id="countdown">โหลด...</div>
+        <button type="button"
+          class="btn btn-secondary btn-sm mt-2"
+          data-bs-toggle="modal"
+          data-bs-target="#setTimerModal">
+          <i class="bi bi-gear"></i>
+        </button>
+
+        <p class="text-center" style="color: #ddd;">Yala Rajabhat University © 2024 - Made with Love By YRUTeam.</p>
+      </div>
+    </div>
+  </div>
+
+  <form class="row g-3 needs-validation"
+    novalidate>
+    <div class="modal fade"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      id="setTimerModal"
+      tabindex="-1"
+      aria-labelledby="setTimerModalLabel"
+      aria-hidden="true">
+
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5"
+              id="setTimerModalLabel">ตั้งเวลาใหม่</h1>
+            <button type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="row g-3 needs-validation d-flex justify-content-center">
+              <div class="col-md-4">
+                <label class="form-label">เวลาเริ่ม</label>
+                <input type="time"
+                  name="s"
+                  class="form-control text-center"
+                  required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">เวลาสิ้นสุด</label>
+                <input type="time"
+                  name="e"
+                  class="form-control text-center"
+                  required>
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal">ปิด</button>
+            <button type="submit"
+              class="btn btn-primary">บันทึก</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -56,28 +141,33 @@
 
     const currentDate = new Date();
     const year = currentDate.getFullYear();
+
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
-    // console.log(formattedDate);
 
     const startTime = new Date(`${formattedDate}T${s}:00`).getTime();
     const endTime = new Date(`${formattedDate}T${e}:00`).getTime();
+
+
+    document.getElementById("start-time").innerHTML = `${s} น.`;
+    document.getElementById("end-time").innerHTML = `${e} น.`;
 
     function updateCountdown() {
       const now = new Date().getTime();
 
       if (now < startTime) {
-        document.getElementById("countdown").innerHTML = "Coming Soon";
+        document.getElementById("countdown").innerHTML = "เร็วๆ นี้";
       } else if (now >= startTime && now <= endTime) {
         const timeLeft = endTime - now;
 
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        // const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        document.getElementById("countdown").innerHTML = `${addZero(days)}<span class="badge">ว.</span> ${addZero(hours)}<span class="badge">ชม.</span> ${addZero(minutes)}<span class="badge">น.</span> ${addZero(seconds)}<span class="badge">ว.</span>`;
+        // document.getElementById("countdown").innerHTML = `${addZero(days)}<span class="badge">ว.</span> ${addZero(hours)}<span class="badge">ชม.</span> ${addZero(minutes)}<span class="badge">น.</span> ${addZero(seconds)}<span class="badge">ว.</span>`;
+        document.getElementById("countdown").innerHTML = `${addZero(hours)}<span class="badge">ชม.</span> ${addZero(minutes)}<span class="badge">น.</span> ${addZero(seconds)}<span class="badge">ว.</span>`;
       } else {
         document.getElementById("countdown").innerHTML = "หมดเวลา";
         clearInterval(interval);
@@ -86,15 +176,23 @@
 
     const interval = setInterval(updateCountdown, 1000);
 
+    function currentDateTime() {
+      const dateX = new Date();
+      const hours = dateX.getHours();
+      const minutes = dateX.getMinutes();
+      const seconds = dateX.getSeconds();
+
+      document.getElementById("ccr-time").innerHTML = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
+    }
+
+    setInterval(currentDateTime, 1000);
 
     function addZero(num) {
-      if (num < 10) {
-        num = '0' + num;
-      }
-
-      return num;
+      return String(num).padStart(2, '0');
     }
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
 
 </body>
 
